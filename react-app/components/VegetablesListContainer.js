@@ -1,7 +1,6 @@
 import React from "react";
 import VegetableCard from "./Vegetables/VegetableCard";
 import { Grid } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getThreeSuggestions } from "../redux/model/vegetableSlice";

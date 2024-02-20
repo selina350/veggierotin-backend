@@ -29,6 +29,7 @@ class UserVegetable(db.Model, UserMixin):
             'user_id': self.user_id,
             'vegetable_id': self.vegetable_id,
             'user': self.user.to_dict(),
-            'vegetable': self.vegetable.to_dict()
+            'vegetable': self.vegetable.to_dict(),
+            'createdAt':self.createdAt
 
         }
