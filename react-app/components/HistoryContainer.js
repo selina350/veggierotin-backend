@@ -8,7 +8,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 const HistoryContainer = () => {
   const dispatch = useDispatch();
   const user_vegetables = useSelector((state) => state.model.history);
-  console.log(user_vegetables);
+  let objOfList = {};
   let list = [];
   for (let key in user_vegetables) {
     let date;
@@ -16,24 +16,20 @@ const HistoryContainer = () => {
     if (user_vegetables[key].createdAt) {
       date = new Date(user_vegetables[key].createdAt).toDateString();
       vegeName = user_vegetables[key].vegetable.name;
-      if (list.length === 0) {
-        let ele = {};
-        ele.date = date;
-        ele.vegetables = [vegeName];
-        list.push(ele);
+      if (objOfList[date] === undefined) {
+        objOfList[date] = [vegeName];
       } else {
-        list.forEach((obj) => {
-          if (obj.date === date) {
-            obj.vegetables.push(vegeName);
-          } else {
-            obj.date = date;
-            obj.vegetables.push(vegeName);
-          }
-        });
+        objOfList[date].push(vegeName);
       }
     }
   }
-  console.log("list", list);
+  for (let key in objOfList) {
+    let date = key;
+    let vege = objOfList[key];
+    let ele = { date: date, vege: vege };
+    list.push(ele);
+  }
+
   useEffect(() => {
     dispatch(getAllVegetablesforUser1());
   }, []);
@@ -56,7 +52,7 @@ const HistoryContainer = () => {
             <li key={`section-${obj.date}`}>
               <ul>
                 <ListSubheader>{`Shopping Time ${obj.date}`}</ListSubheader>
-                {obj.vegetables.map((item) => (
+                {obj.vege.map((item) => (
                   <ListItem key={`item-${obj.date}-${item}`}>
                     <ListItemText primary={item} />
                   </ListItem>
