@@ -8,6 +8,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 const HistoryContainer = () => {
   const dispatch = useDispatch();
   const user_vegetables = useSelector((state) => state.model.history);
+  //get history list grouped by date as an object
   let objOfList = {};
   let list = [];
   for (let key in user_vegetables) {
@@ -23,32 +24,33 @@ const HistoryContainer = () => {
       }
     }
   }
+  //massage data to an array
   for (let key in objOfList) {
     let date = key;
     let vege = objOfList[key];
     let ele = { date: date, vege: vege };
     list.push(ele);
   }
-
+  //sort : most current on top
+  const sortedList = list.sort((a, b) => (a.date < b.date ? 1 : -1))
   useEffect(() => {
     dispatch(getAllVegetablesforUser1());
   }, []);
   return (
-    <div>
+    <>
       <List
         sx={{
           width: "100%",
-          maxWidth: 360,
+          height: "100%",
           bgcolor: "background.paper",
           position: "relative",
           overflow: "auto",
-          maxHeight: 300,
           "& ul": { padding: 0 },
         }}
         subheader={<li />}
       >
-        {list &&
-          list.map((obj) => (
+        {sortedList &&
+          sortedList.map((obj) => (
             <li key={`section-${obj.date}`}>
               <ul>
                 <ListSubheader>{`Shopping Time ${obj.date}`}</ListSubheader>
@@ -61,7 +63,7 @@ const HistoryContainer = () => {
             </li>
           ))}
       </List>
-    </div>
+    </>
   );
 };
 
