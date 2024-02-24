@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import {
+  getSuggestionsForGuest,
+  storeGuestPickedVegetable,
+} from "../../utils/vegetableHelper";
 
 //action creation by thunk
 export const getAllVegetables = () => async (dispatch) => {
@@ -21,41 +25,61 @@ export const getAllVegetables = () => async (dispatch) => {
   }
 };
 
-
 export const getNewVegetable = (vegetableId) => async (dispatch) => {
-  try {
-    await axios.post(`/api/users/1/vegetables/${vegetableId}`);
-    const response = await axios.get("/api/vegetables/random");
-    const { data } = response;
-    dispatch(fetchVegetableSuccess(data.vegetables));
-  } catch (e) {
-    const { response } = e;
-    if (response.status < 500) {
+  const isLogedIn = false;
+  //Todos: Add user login logic
+  // const isLogedIn = getState().controller.user;
+  if (isLogedIn) {
+    try {
+      await axios.post(`/api/users/1/vegetables/${vegetableId}`);
+      const response = await axios.get("/api/vegetables/random");
       const { data } = response;
-      if (data.errors) {
-        return data.errors;
+      dispatch(fetchVegetableSuccess(data.vegetables));
+    } catch (e) {
+      const { response } = e;
+      if (response.status < 500) {
+        const { data } = response;
+        if (data.errors) {
+          return data.errors;
+        }
+      } else {
+        return ["An error occurred. Please try again."];
       }
-    } else {
-      return ["An error occurred. Please try again."];
     }
+  } else {
+    //guest mode
+    storeGuestPickedVegetable(vegetableId);
+    const vegetables = await getSuggestionsForGuest();
+    dispatch(fetchVegetableSuccess(vegetables));
   }
 };
 
-export const getThreeSuggestions = () => async (dispatch) => {
-  try {
-    const response = await axios.get(`/api/vegetables/random`);
-    const { data } = response;
-    dispatch(fetchVegetableSuccess(data.vegetables));
-  } catch (e) {
-    const { response } = e;
-    if (response.status < 500) {
+export const getThreeSuggestions = () => async (dispatch, getState) => {
+  const isLogedIn = false;
+  //Todos: Add user login logic
+  // const isLogedIn = getState().controller.user;
+  if (isLogedIn) {
+    //loged in user
+    try {
+      const response = await axios.get(`/api/vegetables/random`);
       const { data } = response;
-      if (data.errors) {
-        return data.errors;
+      dispatch(fetchVegetableSuccess(data.vegetables));
+    } catch (e) {
+      const { response } = e;
+      if (response.status < 500) {
+        const { data } = response;
+        if (data.errors) {
+          return data.errors;
+        }
+      } else {
+        return ["An error occurred. Please try again."];
       }
-    } else {
-      return ["An error occurred. Please try again."];
     }
+  } else {
+    //guest mode
+    const isInitLoad = getState().model.vegetables.fetchPending;
+    const vegetables = await getSuggestionsForGuest(isInitLoad);
+    dispatch(fetchVegetableSuccess(vegetables));
   }
 };
 

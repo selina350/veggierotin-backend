@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { List, ListItem } from "@mui/material";
-import { getAllVegetablesforUser1 } from "../redux/model/historySlice";
+import { getUserHistories } from "../redux/model/historySlice";
 import { useDispatch, useSelector } from "react-redux";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
@@ -32,9 +32,9 @@ const HistoryContainer = () => {
     list.push(ele);
   }
   //sort : most current on top
-  const sortedList = list.sort((a, b) => (a.date < b.date ? 1 : -1))
+  const sortedList = list.sort((a, b) => (a.date < b.date ? 1 : -1));
   useEffect(() => {
-    dispatch(getAllVegetablesforUser1());
+    dispatch(getUserHistories());
   }, []);
   return (
     <>

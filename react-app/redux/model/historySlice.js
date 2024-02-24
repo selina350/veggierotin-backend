@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import {
+  getUserPickHisotry,
+  userPickHistory,
+} from "../../utils/vegetableHelper";
 
-
-
-export const getAllVegetablesforUser1 = () => async (dispatch) => {
+export const getUserHistories = () => async (dispatch, getState) => {
+  const isLogedIn = false;
+  //Todos: Add user login logic
+  // const isLogedIn = getState().controller.user;
+  if (isLogedIn) {
     try {
       const response = await axios.get("/api/users/1/vegetables");
       const { data } = response;
@@ -19,9 +25,12 @@ export const getAllVegetablesforUser1 = () => async (dispatch) => {
         return ["An error occurred. Please try again."];
       }
     }
-  };
-
-
+  } else {
+    //guest mode
+    const userPickHistory = await getUserPickHisotry();
+    dispatch(fetchHistorySuccess(userPickHistory));
+  }
+};
 
 const historySlice = createSlice({
   name: "history",
@@ -41,6 +50,5 @@ const historySlice = createSlice({
   },
 });
 
-const { fetchHistorySuccess, deleteHistorySuccess } =
-historySlice.actions;
+const { fetchHistorySuccess, deleteHistorySuccess } = historySlice.actions;
 export default historySlice.reducer;
