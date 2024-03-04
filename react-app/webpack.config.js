@@ -7,7 +7,7 @@ const webpack = require("webpack");
 console.log("process.env.MOCK_API", process.env.MOCK_API);
 const isMockAPIEnabled = process.env.MOCK_API === "true";
 
-module.exports = {
+const config = {
   mode: "development",
   entry: {
     main: ["./index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
@@ -46,4 +46,15 @@ module.exports = {
       },
     },
   },
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === "development") {
+  }
+
+  if (argv.mode === "production") {
+    config.devtool = false;
+  }
+
+  return config;
 };
