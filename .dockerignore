@@ -1,0 +1,11 @@
+.venv
+.env
+
+node_modules
+/instance
+
+.DS_Store
+react-app/dist
+
+Dockerfile
+.git

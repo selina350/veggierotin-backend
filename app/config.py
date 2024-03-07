@@ -10,5 +10,6 @@ class Config:
     # so the connection uri must be updated here (for production)
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL').replace('postgres://', 'postgresql://')
+    print(SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_ECHO = True
     GOOGLEMAPS_KEY = os.environ.get('MAPS_API_KEY')
