@@ -1,5 +1,9 @@
 import os
+from dotenv import load_dotenv
 
+flask_env = os.environ.get('FLASK_ENV')
+if flask_env == "production":
+    load_dotenv('/etc/secrets/.env')
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')

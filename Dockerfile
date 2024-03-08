@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM python:3.10-alpine AS builder
+FROM python:3.10-alpine AS base
 
 ENV PIPENV_VENV_IN_PROJECT=1
 
@@ -16,6 +16,14 @@ RUN pipenv sync
 COPY . /usr/src/
 
 EXPOSE 5000
+
+FROM base AS development
+CMD pipenv run flask db upgrade \
+    && pipenv run flask seed all \
+    && pipenv run flask run -h 0.0.0.0 -p 5000
+
+FROM base AS production
+ENV FLASK_ENV=production
 CMD pipenv run flask db upgrade \
     && pipenv run flask seed all \
     && pipenv run flask run -h 0.0.0.0 -p 5000

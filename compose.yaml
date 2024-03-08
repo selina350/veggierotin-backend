@@ -1,6 +1,8 @@
 services:
   backend:
-    image: selina350/pick-vegetables:latest
+    build:
+      target: development
+    image: pick-vegetables
     volumes:
       - ./app:/usr/src/app
     ports:
