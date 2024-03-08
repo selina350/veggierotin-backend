@@ -1,0 +1,8 @@
+services:
+  backend:
+    image: selina350/pick-vegetables:latest
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - "5000:5000"
+    env_file: .env
