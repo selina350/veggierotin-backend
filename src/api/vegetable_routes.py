@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Vegetable, User, db,UserVegetable
+from src.models import Vegetable, User, db,UserVegetable
 from .user_routes import get_all_vegetables_by_user1
 from sqlalchemy import desc
 

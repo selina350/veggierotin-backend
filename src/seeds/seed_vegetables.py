@@ -1,4 +1,4 @@
-from app.models import db, Vegetable, environment, SCHEMA
+from src.models import db, Vegetable, environment, SCHEMA
 from sqlalchemy.sql import text
 
 

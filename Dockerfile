@@ -3,17 +3,17 @@ FROM python:3.10-alpine AS base
 
 ENV PIPENV_VENV_IN_PROJECT=1
 
-WORKDIR /usr/src
+WORKDIR /usr/app
 
 # Install & use pipenv
 RUN python -m pip install --upgrade pip
 RUN pip install pipenv
 
 # Install dependencies
-COPY Pipfile.lock Pipfile /usr/src/
+COPY Pipfile.lock Pipfile /usr/app/
 RUN pipenv sync
 
-COPY . /usr/src/
+COPY . /usr/app/
 
 EXPOSE 5000
 

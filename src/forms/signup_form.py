@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, SelectField, FloatField, EmailField
 from wtforms.validators import DataRequired, ValidationError, Length, NumberRange
-from app.models import User
+from src.models import User
 
 
 def user_exists(form, field):
