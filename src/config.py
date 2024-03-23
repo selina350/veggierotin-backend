@@ -13,7 +13,6 @@ class Config:
     # url in the hidden config vars to start with postgres.
     # so the connection uri must be updated here (for production)
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL').replace('postgres://', 'postgresql://')
+        'SQLALCHEMY_DATABASE_URI').replace('postgres://', 'postgresql://')
     print(SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_ECHO = True
-    GOOGLEMAPS_KEY = os.environ.get('MAPS_API_KEY')

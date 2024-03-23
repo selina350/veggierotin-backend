@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.2
 FROM python:3.10-alpine AS base
 
 ENV PIPENV_VENV_IN_PROJECT=1
@@ -11,7 +11,7 @@ RUN pip install pipenv
 
 # Install dependencies
 COPY Pipfile.lock Pipfile /usr/app/
-RUN pipenv sync
+RUN pipenv sync --system
 
 COPY . /usr/app/
 
